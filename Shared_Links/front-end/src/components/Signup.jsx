@@ -21,9 +21,12 @@ const Signup = () => {
     e.preventDefault();
     setError("");
 
+    console.log("Email:", email);
+    console.log("Password:", password);
+
     try {
       // Change URL to point to your Express API signup endpoint
-      const res = await fetch("http://localhost:3000/api/signup", {
+      const res = await fetch("http://localhost:5000/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
