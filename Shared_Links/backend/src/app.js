@@ -8,7 +8,12 @@ const authRoutes = require("./routes/auth");
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Allow requests only from your frontend
+    credentials: true, // Allow cookies and authentication headers
+  })
+);
 
 app.use(bodyParser.json());
 

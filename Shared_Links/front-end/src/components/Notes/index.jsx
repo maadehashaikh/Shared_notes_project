@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import NoteCard from "../../components/NotesCard";
+import ProtectedRoute from "../ProctedRoute";
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
@@ -30,19 +31,22 @@ const Notes = () => {
   }, []);
 
   return (
-    <Layout>
-      <div className="mb-4 flex justify-between items-center">
-        <h2 className="text-2xl font-bold">My Notes</h2>
-        <Link href="/notes/new">
-          <span className="px-4 py-2 bg-primary text-white rounded hover:bg-orange-600">
-            New Note
-          </span>
-        </Link>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {notes && notes?.map((note) => <NoteCard key={note._id} note={note} />)}
-      </div>
-    </Layout>
+    <ProtectedRoute>
+      <Layout>
+        <div className="mb-4 flex justify-between items-center">
+          <h2 className="text-2xl font-bold">My Notes</h2>
+          <Link href="/notes/new">
+            <span className="px-4 py-2 bg-primary text-white rounded hover:bg-orange-600">
+              New Note
+            </span>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {notes &&
+            notes?.map((note) => <NoteCard key={note._id} note={note} />)}
+        </div>
+      </Layout>
+    </ProtectedRoute>
   );
 };
 

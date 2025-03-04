@@ -9,14 +9,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Auto-redirect if already authenticated
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      router.push("/notes");
-    }
-  }, [router]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -26,14 +18,17 @@ const Login = () => {
       const res = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.message || "Login failed. Please try again.");
       } else {
+        console.log("Token received:", data.token);
         localStorage.setItem("token", data.token);
-        router.push("/notes");
+        router.push("/");
+        alert("Login successfully");
       }
     } catch (error) {
       setError("Something went wrong. Please try again.");

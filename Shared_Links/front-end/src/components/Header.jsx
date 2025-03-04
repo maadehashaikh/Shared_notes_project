@@ -1,22 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@src/context/AuthContext.js";
 
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const router = useRouter();
+  const { isAuthenticated, logout } = useAuth();
+  console.log("Header Rendered - isAuthenticated:", isAuthenticated);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    router.push("/");
-  };
+  if (isAuthenticated === null) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <header className="bg-primary text-white p-4">
@@ -25,6 +17,9 @@ const Header = () => {
           <Link href="/">Notes App</Link>
         </h1>
         <nav>
+          <Link href="/">
+            <span className="mr-4 hover:underline">Home</span>
+          </Link>
           <Link href="/notes">
             <span className="mr-4 hover:underline">My Notes</span>
           </Link>
@@ -32,7 +27,7 @@ const Header = () => {
             <span className="mr-4 hover:underline">Public Notes</span>
           </Link>
           {isAuthenticated ? (
-            <button onClick={handleLogout} className="hover:underline">
+            <button onClick={logout} className="hover:underline">
               Logout
             </button>
           ) : (
